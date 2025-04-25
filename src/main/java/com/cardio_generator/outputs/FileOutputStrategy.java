@@ -8,6 +8,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.concurrent.ConcurrentHashMap;
 
 // Changed classname for UpperCamelCase
+/**
+ * Stores data about patients in a file at a specified directory.
+ * 
+ * @author Tom Pepels
+ */
 public class FileOutputStrategy implements OutputStrategy {
     
     private String baseDirectory; // Changed field name to lowerCamelCase
@@ -16,11 +21,26 @@ public class FileOutputStrategy implements OutputStrategy {
     public final ConcurrentHashMap<String, String> fileMap = new ConcurrentHashMap<>(); 
 
     // Changed name of constructor to be same as class name
+    /**
+     * Initializes class with given path to a new directory.
+     * 
+     * @param baseDirectory String line which is the path for future directory.
+     */
     public FileOutputStrategy(String baseDirectory) {
 
         this.baseDirectory = baseDirectory; // Change field name to be same as above
     }
 
+    /**
+     * Stores the information about the patient into a file at a directory.
+     * Method stores id, timespan, and data of the patient.
+     * In case of errors, prints it and stops execution of method.
+     * 
+     * @param patientId integer value of id of a patient.
+     * @param timestamp long value when measurement was taken.
+     * @param label string name of file to which the data will be stored.
+     * @param data string data about the patient.
+     */
     @Override
     public void output(int patientId, long timestamp, String label, String data) {
         try {
