@@ -66,3 +66,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Project Members
 - Student ID: 6314859
+
+## UML Diagrams
+The pdf file consists of all 4 diagrams with explanations. The file is located at [UML_MODELS](uml_models) folder.
