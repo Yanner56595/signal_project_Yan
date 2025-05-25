@@ -1,0 +1,12 @@
+Patient ID: 20, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 77.0
+Patient ID: 39, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 84.0
+Patient ID: 50, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 80.0
+Patient ID: 1, Timestamp: 1748201287758, Label: DiastolicPressure, Data: 80.0
+Patient ID: 10, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 73.0
+Patient ID: 25, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 75.0
+Patient ID: 27, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 72.0
+Patient ID: 29, Timestamp: 1748201287758, Label: DiastolicPressure, Data: 82.0
+Patient ID: 43, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 79.0
+Patient ID: 3, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 71.0
+Patient ID: 24, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 80.0
+Patient ID: 30, Timestamp: 1748201287759, Label: DiastolicPressure, Data: 80.0

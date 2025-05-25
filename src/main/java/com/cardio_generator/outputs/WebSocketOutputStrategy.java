@@ -1,7 +1,8 @@
 package com.cardio_generator.outputs;
 
-import org.java_websocket.WebSocket;
 import org.java_websocket.server.WebSocketServer;
+import org.java_websocket.WebSocket;
+import java.net.InetSocketAddress;
 
 import java.net.InetSocketAddress;
 
@@ -15,9 +16,18 @@ public class WebSocketOutputStrategy implements OutputStrategy {
         server.start();
     }
 
+    /**
+     * Outputs data to the web server in standard format
+     * 
+     * @param patientId integer value of id of a patient.
+     * @param timestamp long value when measurement was taken.
+     * @param label string name of file to which the data will be stored.
+     * @param data string data about the patient.
+     */
     @Override
     public void output(int patientId, long timestamp, String label, String data) {
-        String message = String.format("%d,%d,%s,%s", patientId, timestamp, label, data);
+        String message = String.format("Patient ID: %d, Timestamp: %d, Label: %s, Data: %s", 
+                    patientId, timestamp, label, data);
         // Broadcast the message to all connected clients
         for (WebSocket conn : server.getConnections()) {
             conn.send(message);

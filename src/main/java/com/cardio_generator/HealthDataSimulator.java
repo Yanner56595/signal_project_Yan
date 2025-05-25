@@ -64,7 +64,7 @@ public class HealthDataSimulator {
      * file from parseArguments function
      */
     public static void main(String[] args) throws IOException {
-
+        args = "--patient-count 100 --output websocket:8887".split(" ");
         parseArguments(args);
 
         scheduler = Executors.newScheduledThreadPool(patientCount * 4);

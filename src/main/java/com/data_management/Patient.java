@@ -37,7 +37,25 @@ public class Patient {
      */
     public void addRecord(double measurementValue, String recordType, long timestamp) {
         PatientRecord record = new PatientRecord(this.patientId, measurementValue, recordType, timestamp);
-        this.patientRecords.add(record);
+        //Don't add duplicates
+        if (!duplicateCheck(record)) {
+            this.patientRecords.add(record);
+        }
+    }
+
+    /**
+     * Checks if record already exists
+     * 
+     * @param record Patient record to check
+     * @return true if it's duplicate otherwise false
+     */
+    public boolean duplicateCheck(PatientRecord record) {
+        for (int i = 0; i < patientRecords.size(); i++) {
+            if (record.equals(patientRecords.get(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

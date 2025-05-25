@@ -1,5 +1,7 @@
 package com.data_management;
 
+import com.alerts.AlertTypes.Alert;
+
 /**
  * Represents a single record of patient data at a specific point in time.
  * This class stores all necessary details for a single observation or
@@ -66,5 +68,39 @@ public class PatientRecord {
      */
     public String getRecordType() {
         return recordType;
+    }
+
+    /**
+     * Checks for equality of records
+     * 
+     * @param obj second object to compare
+     * @return true if objects have same parameters, 
+     *         false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        try {
+            PatientRecord other = (PatientRecord)obj;
+            if (patientId != other.patientId) {
+                return false;
+            }
+            if (measurementValue != other.measurementValue) {
+                return false;
+            }
+            if (!recordType.equals(other.recordType)) {
+                return false;
+            }
+            if (timestamp != other.timestamp) {
+                return false;
+            }
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }
