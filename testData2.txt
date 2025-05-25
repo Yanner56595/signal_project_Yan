@@ -1,0 +1,3 @@
+Patient ID: 19, Timestamp: 1748117308859, Label: Cholesterol, Data: 186.61616620768294
+Patient ID: 27, Timestamp: 1748117250111, Label: Saturation, Data: 92.0%
+Patient ID: 27, Timestamp: 1748117250113, Label: Saturation, Data: 97.0%

@@ -1,10 +1,12 @@
 package com.data_management;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.alerts.AlertGenerator;
+import com.cardio_generator.outputs.FileOutputStrategy;
 
 /**
  * Manages storage and retrieval of patient data within a healthcare monitoring
@@ -83,14 +85,19 @@ public class DataStorage {
      * @param args command line arguments
      */
     public static void main(String[] args) {
-        // DataReader is not defined in this scope, should be initialized appropriately.
-        // DataReader reader = new SomeDataReaderImplementation("path/to/data");
+        DataReader reader = new DataParser("data.txt");
         DataStorage storage = new DataStorage();
 
         // Assuming the reader has been properly initialized and can read data into the
         // storage
-        // reader.readData(storage);
+        try {
+            reader.readData(storage);
+        }
+        catch (IOException e) {
+            System.out.println("Problem with reading the file");
+        }
 
+        /* 
         // Example of using DataStorage to retrieve and print records for a patient
         List<PatientRecord> records = storage.getRecords(1, 1700000000000L, 1800000000000L);
         for (PatientRecord record : records) {
@@ -99,9 +106,11 @@ public class DataStorage {
                     ", Data: " + record.getMeasurementValue() +
                     ", Timestamp: " + record.getTimestamp());
         }
+        */
 
+        FileOutputStrategy fileOutputStrategy = new FileOutputStrategy("/");
         // Initialize the AlertGenerator with the storage
-        AlertGenerator alertGenerator = new AlertGenerator(storage);
+        AlertGenerator alertGenerator = new AlertGenerator(storage, fileOutputStrategy);
 
         // Evaluate all patients' data to check for conditions that may trigger alerts
         for (Patient patient : storage.getAllPatients()) {

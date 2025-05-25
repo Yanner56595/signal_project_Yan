@@ -69,3 +69,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## UML Diagrams
 The pdf file consists of all 4 diagrams with explanations. The file is located at [UML_MODELS](uml_models) folder.
+Additionaly first diagram was changed for Week 3 to be more representative.
+
+## Code coverage documentation and verification
+The picture of all tests passed and code coverage documentation can be found at [Code Documentation & Verification](documentation_and_verification) folder.

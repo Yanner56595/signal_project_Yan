@@ -1,7 +1,13 @@
 package com.alerts;
 
+import com.alerts.AlertTypes.AlertCondition;
+import com.alerts.AlertTypes.AlertFactory;
+import com.cardio_generator.outputs.OutputStrategy;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
+import com.data_management.PatientRecord;
+
+import java.util.ArrayList;
 
 /**
  * The {@code AlertGenerator} class is responsible for monitoring patient data
@@ -11,6 +17,9 @@ import com.data_management.Patient;
  */
 public class AlertGenerator {
     private DataStorage dataStorage;
+    private OutputStrategy outputStrategy;
+
+    AlertFactory alertsFactory = new AlertFactory();
 
     /**
      * Constructs an {@code AlertGenerator} with a specified {@code DataStorage}.
@@ -19,34 +28,48 @@ public class AlertGenerator {
      *
      * @param dataStorage the data storage system that provides access to patient
      *                    data
+     * @param outputStrategy strategy where the alerts will be sent
      */
-    public AlertGenerator(DataStorage dataStorage) {
+    public AlertGenerator(DataStorage dataStorage, OutputStrategy outputStrategy) {
         this.dataStorage = dataStorage;
+        this.outputStrategy = outputStrategy;
     }
 
     /**
      * Evaluates the specified patient's data to determine if any alert conditions
      * are met. If a condition is met, an alert is triggered via the
      * {@link #triggerAlert}
-     * method. This method should define the specific conditions under which an
-     * alert
-     * will be triggered.
+     * method.
+     * 
+     * The data for alert is checked for 10 previous minutes
      *
      * @param patient the patient data to evaluate for alert conditions
      */
     public void evaluateData(Patient patient) {
-        // Implementation goes here
+        //Evaluate data for last 10 minutes till current moment
+        ArrayList<PatientRecord> records = patient.getRecords(
+            System.currentTimeMillis() - 10 * 60000, 
+            System.currentTimeMillis());
+        
+        ArrayList<AlertCondition> alertsToCheck = alertsFactory.loadAllAlerts();
+        for (AlertCondition alertCheck : alertsToCheck) {
+            Alert alert = alertCheck.evaluate(String.valueOf(patient.getId()), records);
+            if (alert != null) {
+                triggerAlert(alert);
+            }
+        }
     }
 
     /**
-     * Triggers an alert for the monitoring system. This method can be extended to
-     * notify medical staff, log the alert, or perform other actions. The method
-     * currently assumes that the alert information is fully formed when passed as
-     * an argument.
+     * Triggers an alert for the monitoring system 
+     * which is represented through OutputStrategy
      *
      * @param alert the alert object containing details about the alert condition
      */
     private void triggerAlert(Alert alert) {
-        // Implementation might involve logging the alert or notifying staff
+        outputStrategy.output(
+            Integer.parseInt(alert.getPatientId()), 
+            alert.getTimestamp(), "Alerts", 
+            alert.getCondition());
     }
 }
