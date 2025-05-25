@@ -3,9 +3,9 @@ package data_management;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.alerts.Alert;
-import com.alerts.AlertTypes.AlertCondition;
-import com.alerts.AlertTypes.BloodPressureThresholdAlert;
+import com.alerts.AlertTypes.Alert;
+import com.alerts.AlertStrategies.AlertStrategy;
+import com.alerts.AlertStrategies.BloodPressureThresholdStrategy;
 import com.data_management.PatientRecord;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class BloodPressureThresholdAlertTest {
 
-    AlertCondition alertChecker;
+    AlertStrategy alertChecker;
 
     PatientRecord condition1 = new PatientRecord(1, 180, "SystolicPressure", 1L);
     PatientRecord condition2 = new PatientRecord(1, 160, "SystolicPressure", 2L);
@@ -29,14 +29,14 @@ public class BloodPressureThresholdAlertTest {
 
     @BeforeEach
     void setUp() {
-        alertChecker = new BloodPressureThresholdAlert();
+        alertChecker = new BloodPressureThresholdStrategy();
     }
 
     @Test
     void noDataTest() {
         // Edge case no data
         ArrayList<PatientRecord> records1 = new ArrayList<PatientRecord>();
-        assertEquals(null, alertChecker.evaluate("1", records1));        
+        assertEquals(null, alertChecker.checkCondition(records1));        
     }
 
     @Test
@@ -49,7 +49,7 @@ public class BloodPressureThresholdAlertTest {
         records1.add(condition6);
         records1.add(condition8);
         records1.add(condition9);
-        assertEquals(null, alertChecker.evaluate("1", records1)); 
+        assertEquals(null, alertChecker.checkCondition(records1)); 
     }
 
     @Test
@@ -60,18 +60,18 @@ public class BloodPressureThresholdAlertTest {
         records1.add(condition3);
         assertEquals(new Alert(
             "1", 
-            "Critical systolic pressure", 
+            "Blood Threshold Alert", 
             3L), 
-            alertChecker.evaluate("1", records1));
+            alertChecker.checkCondition(records1));
 
         records1 = new ArrayList<PatientRecord>();
         records1.add(condition6);
         records1.add(condition7);
         assertEquals(new Alert(
             "1", 
-            "Critical diastolic pressure", 
+            "Blood Threshold Alert", 
             2L), 
-            alertChecker.evaluate("1", records1));
+            alertChecker.checkCondition(records1));
     }
 
     @Test
@@ -82,17 +82,17 @@ public class BloodPressureThresholdAlertTest {
         records1.add(condition5);
         assertEquals(new Alert(
             "1", 
-            "Critical systolic pressure", 
+            "Blood Threshold Alert", 
             5L), 
-            alertChecker.evaluate("1", records1));
+            alertChecker.checkCondition(records1));
 
         records1 = new ArrayList<PatientRecord>();
         records1.add(condition9);
         records1.add(condition10);
         assertEquals(new Alert(
             "1", 
-            "Critical diastolic pressure", 
+            "Blood Threshold Alert", 
             5L), 
-            alertChecker.evaluate("1", records1));        
+            alertChecker.checkCondition(records1));        
     } 
 }

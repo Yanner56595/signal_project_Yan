@@ -1,4 +1,4 @@
-package com.alerts;
+package com.alerts.AlertTypes;
 
 // Represents an alert
 public class Alert {
@@ -37,16 +37,19 @@ public class Alert {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Alert other = (Alert)obj;
-        if (!this.patientId.equals(other.getPatientId())) {
-            return false;
+        try {
+            Alert other = (Alert)obj;
+            if (!this.patientId.equals(other.getPatientId())) {
+                return false;
+            }
+            if (!this.condition.equals(other.getCondition())) {
+                return false;
+            }
+            if (this.timestamp != other.getTimestamp()) {
+                return false;
+            }
         }
-        if (!this.condition.equals(other.getCondition())) {
-            return false;
-        }
-        if (this.timestamp != other.getTimestamp()) {
+        catch (Exception e) {
             return false;
         }
         return true;

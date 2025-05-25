@@ -24,7 +24,7 @@ public class DataParsesTest {
     @Test
     void testReadData() {
         DataParser parser = new DataParser("testData1.txt");
-        DataStorage dataStorage = new DataStorage();
+        DataStorage dataStorage = DataStorage.getInstance();
 
         //Edge case
         try {
@@ -37,7 +37,6 @@ public class DataParsesTest {
 
 
         parser = new DataParser("testData2.txt");
-        dataStorage = new DataStorage();
         try {
             parser.readData(dataStorage);
             assertEquals(dataStorage.getAllPatients().size(), 2); //Check 2 patients

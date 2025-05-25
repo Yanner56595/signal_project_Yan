@@ -5,15 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.alerts.Alert;
-import com.alerts.AlertTypes.AlertCondition;
-import com.alerts.AlertTypes.ECGAbnormalAlert;
+import com.alerts.AlertStrategies.AlertStrategy;
+import com.alerts.AlertStrategies.ECGAbnormalStrategy;
+import com.alerts.AlertTypes.Alert;
 import com.data_management.PatientRecord;
 
 import java.util.ArrayList;
 
 public class ECGAbnormalAlertTest {
-    AlertCondition alertChecker;
+    AlertStrategy alertChecker;
 
     PatientRecord condition1 = new PatientRecord(1, 10, "ECG", 1L);
     PatientRecord condition2 = new PatientRecord(1, 15, "ECG", 2L);
@@ -25,14 +25,14 @@ public class ECGAbnormalAlertTest {
 
     @BeforeEach
     void setUp() {
-        alertChecker = new ECGAbnormalAlert();
+        alertChecker = new ECGAbnormalStrategy();
     }
 
     @Test
     void noDataTest() {
         // Edge case with no data
         ArrayList<PatientRecord> records1 = new ArrayList<PatientRecord>();
-        assertEquals(null, alertChecker.evaluate("1", records1));
+        assertEquals(null, alertChecker.checkCondition(records1));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class ECGAbnormalAlertTest {
         // Edge case with 1 data, no alert
         ArrayList<PatientRecord> records1 = new ArrayList<PatientRecord>();
         records1.add(condition1);
-        assertEquals(null, alertChecker.evaluate("1", records1));
+        assertEquals(null, alertChecker.checkCondition(records1));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class ECGAbnormalAlertTest {
         records2.add(condition1);
         records2.add(condition1);
         records2.add(condition1);
-        assertEquals(null, alertChecker.evaluate("1", records2));
+        assertEquals(null, alertChecker.checkCondition(records2));
     }
 
     @Test
@@ -60,8 +60,8 @@ public class ECGAbnormalAlertTest {
         records3.add(condition1);
         records3.add(condition2);
         records3.add(condition3);
-        assertEquals(new Alert("1", "Abnormal ECG", 3L), 
-                alertChecker.evaluate("1", records3));
+        assertEquals(new Alert("1", "ECG Alert", 3L), 
+                alertChecker.checkCondition(records3));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ECGAbnormalAlertTest {
         records4.add(condition1);
         records4.add(condition2);
         records4.add(condition4);
-        assertEquals(null, alertChecker.evaluate("1", records4));
+        assertEquals(null, alertChecker.checkCondition(records4));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ECGAbnormalAlertTest {
         records5.add(condition1);
         records5.add(condition2);
         records5.add(condition5);
-        assertEquals(null, alertChecker.evaluate("1", records5));
+        assertEquals(null, alertChecker.checkCondition(records5));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class ECGAbnormalAlertTest {
         records6.add(condition2);
         records6.add(condition6);
         records6.add(condition7);
-        assertEquals(new Alert("1", "Abnormal ECG", 4L), 
-                alertChecker.evaluate("1", records6));
+        assertEquals(new Alert("1", "ECG Alert", 4L), 
+                alertChecker.checkCondition(records6));
     }
 }

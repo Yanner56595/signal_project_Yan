@@ -12,7 +12,7 @@ class DataStorageTest {
 
     @Test
     void testAddAndGetRecords() {
-        DataStorage storage = new DataStorage();
+        DataStorage storage = DataStorage.getInstance();
         storage.addPatientData(1, 100.0, "WhiteBloodCells", 1714376789050L);
         storage.addPatientData(1, 200.0, "WhiteBloodCells", 1714376789051L);
 
@@ -23,5 +23,12 @@ class DataStorageTest {
 
         // Edge case
         assertEquals(0, storage.getRecords(1, 1714376789052L, 1714376789053L).size());
+    }
+
+    @Test
+    void test2() {
+        // Test singleton
+        DataStorage storage = DataStorage.getInstance();
+        assertEquals(storage, DataStorage.getInstance());
     }
 }

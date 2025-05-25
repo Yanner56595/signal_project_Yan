@@ -5,16 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.alerts.Alert;
-import com.alerts.AlertTypes.AlertCondition;
-import com.alerts.AlertTypes.SaturationDropAlert;
+import com.alerts.AlertStrategies.AlertStrategy;
+import com.alerts.AlertStrategies.SaturationDropStrategy;
+import com.alerts.AlertTypes.Alert;
 import com.data_management.PatientRecord;
 
 import java.util.ArrayList;
 
 public class SaturationDropAlertTest {
 
-    AlertCondition alertChecker;
+    AlertStrategy alertChecker;
 
     PatientRecord condition1 = new PatientRecord(1, 95, "Saturation", 1L);
     PatientRecord condition2 = new PatientRecord(1, 92, "Saturation", 2L);
@@ -27,14 +27,14 @@ public class SaturationDropAlertTest {
 
     @BeforeEach
     void setUp() {
-        alertChecker = new SaturationDropAlert();
+        alertChecker = new SaturationDropStrategy();
     }
 
     @Test
     void noDataTest() {
         // Edge case of no data
         ArrayList<PatientRecord> records1 = new ArrayList<PatientRecord>();
-        assertEquals(null, alertChecker.evaluate("1", records1));
+        assertEquals(null, alertChecker.checkCondition(records1));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class SaturationDropAlertTest {
         // Edge case with 1 data
         ArrayList<PatientRecord> records2 = new ArrayList<PatientRecord>();
         records2.add(condition1);
-        assertEquals(null, alertChecker.evaluate("1", records2));
+        assertEquals(null, alertChecker.checkCondition(records2));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class SaturationDropAlertTest {
         ArrayList<PatientRecord> records2 = new ArrayList<PatientRecord>();
         records2.add(condition1);
         records2.add(condition2);
-        assertEquals(null, alertChecker.evaluate("1", records2));
+        assertEquals(null, alertChecker.checkCondition(records2));
     }
 
     @Test
@@ -60,8 +60,8 @@ public class SaturationDropAlertTest {
         ArrayList<PatientRecord> records3 = new ArrayList<PatientRecord>();
         records3.add(condition1);
         records3.add(condition3);
-        assertEquals(new Alert("1", "Rapid Drop Alert", 3L), 
-            alertChecker.evaluate("1", records3));
+        assertEquals(new Alert("1", "Drop saturation", 3L), 
+            alertChecker.checkCondition(records3));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class SaturationDropAlertTest {
         ArrayList<PatientRecord> records4 = new ArrayList<PatientRecord>();
         records4.add(condition1);
         records4.add(condition4);
-        assertEquals(null, alertChecker.evaluate("1", records4));        
+        assertEquals(null, alertChecker.checkCondition(records4));        
     }
 
     @Test
@@ -80,8 +80,8 @@ public class SaturationDropAlertTest {
         records5.add(condition1);
         records5.add(condition2);
         records5.add(condition3);
-        assertEquals(new Alert("1", "Rapid Drop Alert", 3L), 
-            alertChecker.evaluate("1", records5));
+        assertEquals(new Alert("1", "Drop saturation", 3L), 
+            alertChecker.checkCondition(records5));
     }
 
     @Test
@@ -90,8 +90,8 @@ public class SaturationDropAlertTest {
         ArrayList<PatientRecord> records6 = new ArrayList<PatientRecord>();
         records6.add(condition1);
         records6.add(condition5);
-        assertEquals(new Alert("1", "Rapid Drop Alert", 1L + 10000 * 60), 
-            alertChecker.evaluate("1", records6));        
+        assertEquals(new Alert("1", "Drop saturation", 1L + 10000 * 60), 
+            alertChecker.checkCondition(records6));        
     }
 
     @Test
@@ -100,7 +100,7 @@ public class SaturationDropAlertTest {
         ArrayList<PatientRecord> records7 = new ArrayList<PatientRecord>();
         records7.add(condition1);
         records7.add(condition6);
-        assertEquals(null, alertChecker.evaluate("1", records7));
+        assertEquals(null, alertChecker.checkCondition(records7));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class SaturationDropAlertTest {
         ArrayList<PatientRecord> records8 = new ArrayList<PatientRecord>();
         records8.add(condition1);
         records8.add(condition7);
-        assertEquals(null, alertChecker.evaluate("1", records8));
+        assertEquals(null, alertChecker.checkCondition(records8));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class SaturationDropAlertTest {
         records9.add(condition1);
         records9.add(condition3);
         records9.add(condition8);
-        assertEquals(new Alert("1", "Rapid Drop Alert", 3L), 
-            alertChecker.evaluate("1", records9));
+        assertEquals(new Alert("1", "Drop saturation", 3L), 
+            alertChecker.checkCondition(records9));
     }
 }

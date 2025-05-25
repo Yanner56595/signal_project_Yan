@@ -1,7 +1,13 @@
 package com.alerts;
 
-import com.alerts.AlertTypes.AlertCondition;
-import com.alerts.AlertTypes.AlertFactory;
+import com.alerts.AlertStrategies.AlertStrategy;
+import com.alerts.AlertStrategies.BloodPressureThresholdStrategy;
+import com.alerts.AlertStrategies.BloodPressureTrendStrategy;
+import com.alerts.AlertStrategies.CombinedHypotensionHypoxiaStrategy;
+import com.alerts.AlertStrategies.ECGAbnormalStrategy;
+import com.alerts.AlertStrategies.SaturationDropStrategy;
+import com.alerts.AlertStrategies.SaturationLowStrategy;
+import com.alerts.AlertTypes.Alert;
 import com.cardio_generator.outputs.OutputStrategy;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
@@ -18,8 +24,6 @@ import java.util.ArrayList;
 public class AlertGenerator {
     private DataStorage dataStorage;
     private OutputStrategy outputStrategy;
-
-    AlertFactory alertsFactory = new AlertFactory();
 
     /**
      * Constructs an {@code AlertGenerator} with a specified {@code DataStorage}.
@@ -51,9 +55,16 @@ public class AlertGenerator {
             System.currentTimeMillis() - 10 * 60000, 
             System.currentTimeMillis());
         
-        ArrayList<AlertCondition> alertsToCheck = alertsFactory.loadAllAlerts();
-        for (AlertCondition alertCheck : alertsToCheck) {
-            Alert alert = alertCheck.evaluate(String.valueOf(patient.getId()), records);
+        ArrayList<AlertStrategy> alertsToCheck = new ArrayList<AlertStrategy>();
+        alertsToCheck.add(new BloodPressureThresholdStrategy());
+        alertsToCheck.add(new BloodPressureTrendStrategy());
+        alertsToCheck.add(new CombinedHypotensionHypoxiaStrategy());
+        alertsToCheck.add(new ECGAbnormalStrategy());
+        alertsToCheck.add(new SaturationDropStrategy());
+        alertsToCheck.add(new SaturationLowStrategy());
+        
+        for (AlertStrategy alertCheck : alertsToCheck) {
+            Alert alert = alertCheck.checkCondition(records);
             if (alert != null) {
                 triggerAlert(alert);
             }

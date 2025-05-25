@@ -5,16 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.alerts.Alert;
-import com.alerts.AlertTypes.AlertCondition;
-import com.alerts.AlertTypes.BloodPressureTrendAlert;
+import com.alerts.AlertStrategies.AlertStrategy;
+import com.alerts.AlertStrategies.BloodPressureTrendStrategy;
+import com.alerts.AlertTypes.Alert;
 import com.data_management.PatientRecord;
 
 import java.util.ArrayList;
 
 public class BloodPressureTrendAlertTest {
 
-    AlertCondition alertChecker;
+    AlertStrategy alertChecker;
 
     PatientRecord condition1 = new PatientRecord(1, 100, "SystolicPressure", 1L);
     PatientRecord condition2 = new PatientRecord(1, 110, "SystolicPressure", 2L);
@@ -31,14 +31,14 @@ public class BloodPressureTrendAlertTest {
 
     @BeforeEach
     void setUp() {
-        alertChecker = new BloodPressureTrendAlert();
+        alertChecker = new BloodPressureTrendStrategy();
     }
 
     @Test
     void noDataTest() {
         // Edge case no data
         ArrayList<PatientRecord> records1 = new ArrayList<PatientRecord>();
-        assertEquals(null, alertChecker.evaluate("1", records1));
+        assertEquals(null, alertChecker.checkCondition(records1));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class BloodPressureTrendAlertTest {
         // Edge case 1 data
         ArrayList<PatientRecord> records1 = new ArrayList<PatientRecord>();
         records1.add(condition1);
-        assertEquals(null, alertChecker.evaluate("1", records1));
+        assertEquals(null, alertChecker.checkCondition(records1));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class BloodPressureTrendAlertTest {
         ArrayList<PatientRecord> records1 = new ArrayList<PatientRecord>();
         records1.add(condition1);
         records1.add(condition2);
-        assertEquals(null, alertChecker.evaluate("1", records1));
+        assertEquals(null, alertChecker.checkCondition(records1));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class BloodPressureTrendAlertTest {
         records1.add(condition7);
         records1.add(condition8);
         records1.add(condition9);
-        assertEquals(null, alertChecker.evaluate("1", records1));
+        assertEquals(null, alertChecker.checkCondition(records1));
     }
 
     @Test
@@ -80,9 +80,9 @@ public class BloodPressureTrendAlertTest {
         records2.add(condition5);
         assertEquals(new Alert(
             "1", 
-            "Increasing systolic blood pressure trend", 
+            "Blood Trend Alert", 
             5L), 
-            alertChecker.evaluate("1", records2));
+            alertChecker.checkCondition(records2));
 
         // Case 3 data, increasing diastolic alert
         records2 = new ArrayList<PatientRecord>();
@@ -91,9 +91,9 @@ public class BloodPressureTrendAlertTest {
         records2.add(condition11);
         assertEquals(new Alert(
             "1", 
-            "Increasing diastolic blood pressure trend", 
+            "Blood Trend Alert", 
             5L), 
-            alertChecker.evaluate("1", records2));
+            alertChecker.checkCondition(records2));
     }
 
     @Test
@@ -105,9 +105,9 @@ public class BloodPressureTrendAlertTest {
         records3.add(condition1);
         assertEquals(new Alert(
             "1", 
-            "Decreasing systolic blood pressure trend", 
+            "Blood Trend Alert", 
             1L), 
-            alertChecker.evaluate("1", records3));
+            alertChecker.checkCondition(records3));
 
         // Case 3 data, decreasing diastolic alert
         records3 = new ArrayList<PatientRecord>();
@@ -116,9 +116,9 @@ public class BloodPressureTrendAlertTest {
         records3.add(condition7);
         assertEquals(new Alert(
             "1", 
-            "Decreasing diastolic blood pressure trend", 
+            "Blood Trend Alert", 
             1L), 
-            alertChecker.evaluate("1", records3));
+            alertChecker.checkCondition(records3));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class BloodPressureTrendAlertTest {
         records4.add(condition7);
         records4.add(condition11);
         records4.add(condition12);
-        assertEquals(null, alertChecker.evaluate("1", records4));
+        assertEquals(null, alertChecker.checkCondition(records4));
     }
 
     @Test
@@ -141,7 +141,7 @@ public class BloodPressureTrendAlertTest {
         records5.add(condition1);
         records5.add(condition10);
         records5.add(condition5);
-        assertEquals(null, alertChecker.evaluate("1", records5));
+        assertEquals(null, alertChecker.checkCondition(records5));
     }
     
 }

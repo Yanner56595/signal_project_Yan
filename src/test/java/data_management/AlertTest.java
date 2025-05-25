@@ -2,7 +2,7 @@ package data_management;
 
 import org.junit.jupiter.api.Test;
 
-import com.alerts.Alert;
+import com.alerts.AlertTypes.Alert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

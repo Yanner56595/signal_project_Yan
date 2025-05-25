@@ -1,26 +1,28 @@
-package com.alerts.AlertTypes;
+package com.alerts.AlertStrategies;
 
 import java.util.ArrayList;
 
-import com.alerts.Alert;
+import com.alerts.AlertFactories.ECGAlertFactory;
+import com.alerts.AlertTypes.Alert;
 import com.data_management.PatientRecord;
 
 /**
- * Alert for abnormal data of ECG measurements
+ * Strategy to find abnormal data of ECG measurements
  * 
  * @author Yan
  */
-public class ECGAbnormalAlert implements AlertCondition {
+public class ECGAbnormalStrategy implements AlertStrategy {
+
+    ECGAlertFactory factory = new ECGAlertFactory();
 
     /**
      * Triggers alerts if any extreme peaks in data exist
      * 
-     * @param patientId String value of Id of a patient
      * @param records ArrayList of records of a patient to check
-     * @return Alert if first found extreme peak in data or null
+     * @return ECG alert if first found extreme peak in data or null
      */
     @Override
-    public Alert evaluate(String patientId, ArrayList<PatientRecord> records) {
+    public Alert checkCondition(ArrayList<PatientRecord> records) {
         ArrayList<PatientRecord> ECGRecords = filter.getFilteredRecords(
             records, "ECG");
         
@@ -28,10 +30,11 @@ public class ECGAbnormalAlert implements AlertCondition {
         for (PatientRecord record : ECGRecords) {
             // Take abnormal as 1.5 times higher value than average
             if (record.getMeasurementValue() >= 1.5 * average) {
-                return new Alert(
-                    patientId, 
-                    "Abnormal ECG", 
-                    record.getTimestamp());
+                return factory.createAlert(
+                    String.valueOf(
+                        record.getPatientId()),
+                        "ECG", 
+                        record.getTimestamp());
             }
         }
         return null;
